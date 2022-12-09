@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tic Tac Toe</title>
+        <style>
+            .t1 {
+                border: 1px solid black;
+                margin-top: 10%;
+            }
+            tr,
+            td {
+                border: 1px solid black;
+                padding: 25px;
+                font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+            }
+            #label {
+                padding: 5px;
+                font-weight: bold;
+                font-size: 40px;
+                font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+            }
+        </style>
+    </head>
+
+    <body>
+        <center>
+            <h1>Tic tac toe</h1>
+            <div id="label"></div>
+            <div id="player_name">
+                <input type="text" id="p1" placeholder="player 1 name" />
+                <input type="text" id="p2" placeholder="player 2 name" />
+                <br />
+                <br />
+                <input type="button" onclick="create_player()" name="start" value="start" />
+            </div>
+            <div id="show_player"></div>
+            <br />
+            <div id="turn"></div>
+            <table class="t1" id="t1">
+                <tr>
+                    <td onclick="add_mark('1')" id="1"></td>
+                    <td onclick="add_mark('2')" id="2"></td>
+                    <td onclick="add_mark('3')" id="3"></td>
+                </tr>
+                <tr>
+                    <td onclick="add_mark('4')" id="4"></td>
+                    <td onclick="add_mark('5')" id="5"></td>
+                    <td onclick="add_mark('6')" id="6"></td>
+                </tr>
+                <tr>
+                    <td onclick="add_mark('7')" id="7"></td>
+                    <td onclick="add_mark('8')" id="8"></td>
+                    <td onclick="add_mark('9')" id="9"></td>
+                </tr>
+            </table>
+        </center>
+        <script>
+            document.getElementById("t1").style.display = "none";
+            
+            let player_array;
+            let current_turn = Math.floor(Math.random() * 2);
+            let p1, p2;
+
+            let game_stop = 1;
+
+            console.log();
+            function player_aboject(p1, p2) {
+                player_array = {
+                    user: [p1, p2],
+                };
+                return player_array;
+            }
+            function create_player() {
+               
+                p1 = document.getElementById("p1").value;
+                p2 = document.getElementById("p2").value;
+                if (p1 == "") {
+                    p1 = "jacob";
+                }
+                if (p2 == "") {
+                    p2 = "robbin";
+                }
+                player_array = player_aboject(p1, p2);
+
+                if (current_turn == 0) {
+                    document.getElementById("turn").innerHTML = "turn goes to " + player_array.user[current_turn];
+                } else {
+                    document.getElementById("turn").innerHTML = "turn goes to " + player_array.user[current_turn];
+                }
+                document.getElementById("player_name").style.display = "none";
+                document.getElementById("show_player").innerHTML = "0 for   " + player_array.user[0] + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; " + "1 for    " + player_array.user[1];
+                document.getElementById("t1").style.display = "inline-block";
+            }
+
+            function add_mark(cell) {
+                let is_cell_empty = document.getElementById(cell).innerHTML;
+                if (is_cell_empty == "" && game_stop) {
+                    document.getElementById(cell).innerHTML = String(current_turn);
+
+                    let n = check_winner(String(current_turn));
+                    if (n != -1 && n != -2) {
+                        game_stop--;
+
+                        document.getElementById("label").innerHTML = "winner is  " + player_array.user[current_turn];
+                    } else {
+                        if (n == -2) {
+                            document.getElementById("label").innerHTML = "match is draw";
+                        }
+                    }
+                    if (current_turn == 0) {
+                        current_turn++;
+
+                        document.getElementById("turn").innerHTML = "turn goes to " + player_array.user[current_turn];
+                    } else {
+                        current_turn--;
+
+                        document.getElementById("turn").innerHTML = "turn goes to " + player_array.user[current_turn];
+                    }
+                }
+            }
+
+            function check_winner(current_turn) {
+                console.log(current_turn);
+                let cell_one = document.getElementById("1").innerHTML;
+                let cell_two = document.getElementById("2").innerHTML;
+                let cell_three = document.getElementById("3").innerHTML;
+                let cell_four = document.getElementById("4").innerHTML;
+                let cell_five = document.getElementById("5").innerHTML;
+                let cell_six = document.getElementById("6").innerHTML;
+                let cell_seven = document.getElementById("7").innerHTML;
+                let cell_eight = document.getElementById("8").innerHTML;
+                let cell_nine = document.getElementById("9").innerHTML;
+                if (
+                    (cell_one == current_turn && cell_two == current_turn && cell_three == current_turn) ||
+                    (cell_four == current_turn && cell_five == current_turn && cell_six == current_turn) ||
+                    (cell_seven == current_turn && cell_eight == current_turn && cell_nine == current_turn) ||
+                    (cell_one == current_turn && cell_four == current_turn && cell_seven == current_turn) ||
+                    (cell_two == current_turn && cell_five == current_turn && cell_eight == current_turn) ||
+                    (cell_three == current_turn && cell_six == current_turn && cell_nine == current_turn) ||
+                    (cell_one == current_turn && cell_five == current_turn && cell_nine == current_turn) ||
+                    (cell_three == current_turn && cell_five == current_turn && cell_seven == current_turn)
+                ) {
+                    console.log("winner is" + current_turn);
+                    return current_turn;
+                } else {
+                    if (
+                        cell_one != "" &&
+                        cell_two != "" &&
+                        cell_three != "" &&
+                        cell_four != "" &&
+                        cell_five != "" &&
+                        cell_six != "" &&
+                        cell_seven != "" &&
+                        cell_eight != "" &&
+                        cell_nine != "" &&
+                        cell_one != "" &&
+                        cell_four != "" &&
+                        cell_seven != "" &&
+                        cell_two != "" &&
+                        cell_five != "" &&
+                        cell_eight != "" &&
+                        cell_three != "" &&
+                        cell_six != "" &&
+                        cell_nine != "" &&
+                        cell_one != "" &&
+                        cell_five != "" &&
+                        cell_nine != "" &&
+                        cell_three != "" &&
+                        cell_five != "" &&
+                        cell_seven != ""
+                    ) {
+                        return -2;
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
